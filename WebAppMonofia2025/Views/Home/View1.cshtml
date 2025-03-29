@@ -1,0 +1,41 @@
+﻿<h1>Hello From My first View :)</h1>
+<h2>byyyyyyyyyyy</h2>
+<!--C# HTML-->
+
+<style>
+/*Style Sheet Langguage*/
+h1{
+    background-color:yellow;
+    color:red;
+}
+</style>
+<script>
+console.log("Hii From Jsavacsript");
+</script>
+<!--Razor Engin write C# inside hhtml render to html [Razor Syntax]-->
+<!--Block of C# Code -->
+@{
+    int x=10;
+    int y = x+10;
+   
+}
+<!--Inline Code : one line C# html-->
+<h4>@(x + y)</h4> 
+<!--Condition Statment if ,switch-->
+@if (x > y)
+{
+    <h2>X greater than y</h2>
+}
+else
+{
+    <h2>X=@x Less than Y=@y</h2>
+
+}
+
+<!--Looping for while do-while foreach-->
+<ul>
+@for(int i = 0; i < 10; i++)
+{
+    <li>@i</li>
+}
+</ul>

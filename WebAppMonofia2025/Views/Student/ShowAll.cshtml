@@ -1,0 +1,12 @@
+﻿<table class="table table-bordered table-bordered">
+    @foreach (Student item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.ImageURL</td>
+            <td><img src="/Images/@item.ImageURL" style="width:100px"/></td>
+        </tr>
+    }
+
+</table>

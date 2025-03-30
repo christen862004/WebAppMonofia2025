@@ -2,10 +2,19 @@
 
 namespace WebAppMonofia2025.Models
 {
+    public class Parent<T>//Open Type
+    {
+        public T Model{ get; set; }
+    } 
+    public class Child  :Parent<Student>
+    { }
+
     public class TestClass
     {
         public int Add(int x,int y)//receive a=>x
         {
+            //Create 
+             //Child<Student>
             dynamic a = 10;
             dynamic b = "20";
             dynamic obj = new Student();

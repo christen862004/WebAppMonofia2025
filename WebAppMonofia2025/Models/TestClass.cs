@@ -7,7 +7,21 @@ namespace WebAppMonofia2025.Models
         public T Model{ get; set; }
     } 
     public class Child  :Parent<Student>
-    { }
+    {
+        string _viewData;
+
+        public object ViewData  //Special Function
+        {
+            get { return _viewData; }
+            set { _viewData = value.ToString(); }
+        }
+
+        public dynamic Viewbag  //Special Function
+        {
+            get { return _viewData; }
+            set { _viewData = value; }
+        }
+    }
 
     public class TestClass
     {

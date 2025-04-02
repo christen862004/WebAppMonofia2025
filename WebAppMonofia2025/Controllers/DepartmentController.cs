@@ -6,6 +6,10 @@ namespace WebAppMonofia2025.Controllers
     public class DepartmentController : Controller
     {
         ITIContext context = new ITIContext();
+        public DepartmentController()
+        {
+            
+        }
         public IActionResult Index()
         {
             List<Department> DepTList= context.Department.ToList();

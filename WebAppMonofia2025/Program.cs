@@ -10,8 +10,13 @@ namespace WebAppMonofia2025
 
             // Add services to the container. Day8
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSession(
+                option=>option.IdleTimeout=TimeSpan.FromMinutes(30)
+                );//set session setting
 
-            var app = builder.Build();
+
+            var app = builder.Build(); //builder readonly
+
             #region Custom Middleware (Inline MiddleWare anonums delege)
             //app.Use(async (httpContext, nextMiddleware) =>
             //{
@@ -43,8 +48,10 @@ namespace WebAppMonofia2025
 
             app.UseRouting();//handel mvc reeust
 
-            app.UseAuthorization();
+            app.UseSession();//setting  up in service berfor v=builder build
 
+            app.UseAuthorization();
+            
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

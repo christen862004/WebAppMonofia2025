@@ -72,5 +72,55 @@ namespace WebAppMonofia2025.Controllers
             return View("DetailsVM",EmpVM);//View DetailsVM ,Model EmployeeWithBracnchListColorMsgViewModel
         }
         #endregion
+
+        #region Edit
+        public IActionResult Edit(int id)
+        {
+            Employee empModel = context.Employee.FirstOrDefault(e=>e.Id == id);
+            //Create ViewModel
+            EmployeeWithDeptListViewModel empVM = new EmployeeWithDeptListViewModel();
+            //mapping
+            empVM.Id= empModel.Id;
+            empVM.Name= empModel.Name;
+            empVM.ImageUrl= empModel.ImageUrl;
+            empVM.Address= empModel.Address;
+            empVM.Salary= empModel.Salary;
+            empVM.DepartmentID = empModel.DepartmentID;
+
+            empVM.DeptList = context.Department.ToList();
+            
+            //send vm to view
+            return View("Edit",empVM);//
+        }
+
+
+
+
+
+
+        [HttpPost]
+        public IActionResult SaveEdit(EmployeeWithDeptListViewModel empFromRequest)//Employee empFromRequest,int id)
+        {
+            if (empFromRequest.Name != null &&empFromRequest.Salary>6000)
+            {
+                //get old refernece 
+                Employee empModel = 
+                    context.Employee.FirstOrDefault(e => e.Id == empFromRequest.Id);
+
+                //mapp
+                empModel.Name=empFromRequest.Name;
+                empModel.Address=empFromRequest.Address;
+                empModel.Salary=empFromRequest.Salary;//<--
+                empModel.ImageUrl=empFromRequest.ImageUrl;//<--
+                empModel.DepartmentID=empFromRequest.DepartmentID;
+
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            empFromRequest.DeptList=context.Department.ToList(); //refill 
+            return View("Edit", empFromRequest);
+        }
+        #endregion
     }
 }

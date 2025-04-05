@@ -6,14 +6,40 @@
 <h1>Edit</h1>
 <!--Who how id exist model (route values | input type hidden-->
 <form method="post" action="/Employee/SaveEdit/@Model.Id">
+    <!--Pure Html-->
+    @* <div>
+        <label>Address</label>
+        <input type="text" class="form form-control" id="Address" name="Address" value="@Model.Address" />
+    </div> *@
+    <!--Using HTML Helper-->
+    <div>
+       @* @Html.LabelFor(e=>e.Address) *@
+       @* @Html.TextBoxFor(e=>e.Address,new{style="color:red",@class="form form-control"}) *@
+       @* @Html.EditorFor(e=>e.Address)
+       @Html.EditorFor(e=>e.Salary) *@
+    </div>
+    <!--Tag Helper-->
+    <label asp-for="Address"></label>
+    <input class="form form-control" asp-for="Address"/>
+    <hr />
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
     <div>
         <label>Name</label>
         <input type="text" class="form form-control" id="Name" name="Name" value="@Model.Name" />
     </div>
-    <div>
-        <label>Address</label>
-        <input type="text" class="form form-control" id="Address" name="Address" value="@Model.Address" />
-    </div>
+   
     <div>
         <label>ImageUrl</label>
         <input type="text" class="form form-control" id="ImageUrl" name="ImageUrl" value="@Model.ImageUrl" />
@@ -31,6 +57,8 @@
         <select class="form form-control" id="DepartmentID" name="DepartmentID">
             @foreach (Department deptItem in Model.DeptList)
             {
+                
+
                 if (Model.DepartmentID == deptItem.Id)
                 {
                     <option value="@deptItem.Id" selected>@deptItem.Name</option>
@@ -49,3 +77,21 @@
 </form>
 
 <a href="/Employee/Index">Back To List</a>
+<br />
+@Html.ActionLink("Back To List","Index","Employee")
+<br />
+<a asp-action="Index" asp-controller="Employee">Back To List</a>
+
+<hr />
+
+
+<a href="/Employee/Details/@Model.Id?name=@Model.Name">Details</a>
+<br />
+@Html.ActionLink("Details Html Helper", "Details", "Employee",new{id=Model.Id,name=Model.Name})
+@Html.ActionLink("Details Html Helper", "Details", "Employee",new{id=Model.Id,name=Model.Name},new {style="color:red"})
+@Html.ActionLink("Details Html Helper", "Details",new{id=Model.Id,name=Model.Name},new {@class="btn btn-success"})
+<br />
+<a class="btn btn-success" 
+    asp-action="Details" asp-controller="Employee"
+    asp-route-id="@Model.Id"  asp-route-name="@Model.Name" 
+    asp-route-salary="12121">Details Tag Helper</a>

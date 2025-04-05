@@ -1,0 +1,37 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "New";
+    SelectList DeptOptions = new SelectList(ViewBag.DeptList,"Id","Name");
+}
+
+<h1>New</h1>
+
+<form asp-action="SaveNew" asp-controller="Employee" method="post">
+    <!--asp-route-id=""-->
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form form-control" />
+    </div>
+    <div>
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form form-control" />
+    </div>
+    <div>
+        <label asp-for="Salary"></label>
+        <input asp-for="Salary"  class="form form-control" />
+    </div>
+    <div>
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form form-control" />
+    </div>
+    <div>
+        <label asp-for="DepartmentID"></label>
+        @* <input asp-for="DepartmentID" class="form form-control" /> *@
+        <select asp-for="DepartmentID" asp-items="@DeptOptions" class="form form-control">
+            <option value="0"> --Select Department-- </option>
+        </select>
+    </div>
+
+    <input type="submit" class="btn btn-success" value="Create"/>
+</form>
+<a asp-action="Index" asp-controller="Employee">Back To List</a>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
 
 
 namespace WebAppMonofia2025.Controllers
@@ -12,21 +13,40 @@ namespace WebAppMonofia2025.Controllers
             context = new ITIContext();
         }
 
-
-        public string incr()//1 2 3 4 || 1 1 1 1 1 1
-        {
-            counter++;
-            return counter.ToString();
-        }
-
         public IActionResult Index()
         {
             List<Employee> EmpList= context.Employee.ToList();//pagaination
             return View("Index",EmpList);//View Index,Model EmloyeeList
         }
+        #region New
+        
+        public IActionResult New()
+        {
+            ViewData["DeptList"] = context.Department.ToList();
+            return View("New");
+        }
+        //cant handel any forign request
+        [HttpPost]
+        [ValidateAntiForgeryToken]//login __RequestVerificationToken [html helper | tag helper]
+        public IActionResult SaveNew(Employee empFromReq)
+        {
+            if (empFromReq.Name != null)
+            {
+                context.Employee.Add(empFromReq);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            //refill ViewDat List
+            ViewData["DeptList"] = context.Department.ToList();
+            return View("New", empFromReq);
+        }
+        #endregion
+
+
 
         #region DEtails
-        public IActionResult DEtails(int id)
+        //href="/Employee/Details/1?name=Ahmed"
+        public IActionResult DEtails(int id,string name)
         {
             //From Datasource
             string Msg = "Hello";

@@ -17,6 +17,6 @@ namespace WebAppMonofia2025.ViewModel
         public int DepartmentID { get; set; }
 
 
-        public List<Department> DeptList { get; set; }
+        public List<Department>? DeptList { get; set; }
     }
 }

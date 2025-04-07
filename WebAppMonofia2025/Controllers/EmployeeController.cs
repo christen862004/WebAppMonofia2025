@@ -18,6 +18,14 @@ namespace WebAppMonofia2025.Controllers
             List<Employee> EmpList= context.Employee.ToList();//pagaination
             return View("Index",EmpList);//View Index,Model EmloyeeList
         }
+
+        public IActionResult CheckOdd(int Salary,string Address)
+        {
+            if (Salary % 2 == 0)
+                return Json(false);
+            return Json(true);
+        }
+
         #region New
         
         public IActionResult New()
@@ -25,24 +33,32 @@ namespace WebAppMonofia2025.Controllers
             ViewData["DeptList"] = context.Department.ToList();
             return View("New");
         }
+
         //cant handel any forign request
         [HttpPost]
         [ValidateAntiForgeryToken]//login __RequestVerificationToken [html helper | tag helper]
         public IActionResult SaveNew(Employee empFromReq)
         {
-            if (empFromReq.Name != null)
+            if (ModelState.IsValid==true)//dont use if manual | using validation attribute Model
             {
-                context.Employee.Add(empFromReq);
-                context.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    context.Employee.Add(empFromReq);
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }catch (Exception ex)
+                {
+                    //send problem to view Validation Action Scope
+                    //ModelState.AddModelError("DepartmentID", "Please Select Department");
+                    ModelState.AddModelError("other", ex.InnerException.Message);
+
+                }
             }
             //refill ViewDat List
             ViewData["DeptList"] = context.Department.ToList();
             return View("New", empFromReq);
         }
         #endregion
-
-
 
         #region DEtails
         //href="/Employee/Details/1?name=Ahmed"
@@ -114,14 +130,10 @@ namespace WebAppMonofia2025.Controllers
         }
 
 
-
-
-
-
         [HttpPost]
         public IActionResult SaveEdit(EmployeeWithDeptListViewModel empFromRequest)//Employee empFromRequest,int id)
         {
-            if (empFromRequest.Name != null &&empFromRequest.Salary>6000)
+            if (empFromRequest.Name != null && empFromRequest.Salary>6000)
             {
                 //get old refernece 
                 Employee empModel = 

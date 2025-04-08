@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace WebAppMonofia2025
 {
@@ -9,12 +11,24 @@ namespace WebAppMonofia2025
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container. Day8
+            // Built in Service 
+            //    1) define and register
+            //    2) define need to registre(AddSession)
+            
             builder.Services.AddControllersWithViews();
             builder.Services.AddSession(
                 option=>option.IdleTimeout=TimeSpan.FromMinutes(30)
                 );//set session setting
+            builder.Services.AddDbContext<ITIContext>(optionBuilder =>
+            {
+                optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("CS"));
+            });
 
 
+            // Custom Service Register
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            
             var app = builder.Build(); //builder readonly
 
             #region Custom Middleware (Inline MiddleWare anonums delege)

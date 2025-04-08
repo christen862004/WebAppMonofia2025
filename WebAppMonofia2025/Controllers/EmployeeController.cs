@@ -6,16 +6,20 @@ namespace WebAppMonofia2025.Controllers
 {
     public class EmployeeController : Controller
     {
-        ITIContext context;
-        int counter = 0;
-        public EmployeeController()
+        //DIP  + OCP + ISP + SRP (IOC)
+        IEmployeeRepository EmployeeRepository;
+        IDepartmentRepository DepartmentRepository;
+
+        public EmployeeController
+            (IEmployeeRepository EmpREpo,IDepartmentRepository deptRepo)//inject
         {
-            context = new ITIContext();
+            EmployeeRepository = EmpREpo; //new EmployeeRepository();//dont craete
+            DepartmentRepository = deptRepo;//new DepartmentRepository();
         }
 
         public IActionResult Index()
         {
-            List<Employee> EmpList= context.Employee.ToList();//pagaination
+            List<Employee> EmpList = EmployeeRepository.GetAll(); 
             return View("Index",EmpList);//View Index,Model EmloyeeList
         }
 
@@ -30,7 +34,7 @@ namespace WebAppMonofia2025.Controllers
         
         public IActionResult New()
         {
-            ViewData["DeptList"] = context.Department.ToList();
+            ViewData["DeptList"] = DepartmentRepository.GetAll();
             return View("New");
         }
 
@@ -43,8 +47,8 @@ namespace WebAppMonofia2025.Controllers
             {
                 try
                 {
-                    context.Employee.Add(empFromReq);
-                    context.SaveChanges();
+                    EmployeeRepository.Add(empFromReq);
+                    EmployeeRepository.Save();
                     return RedirectToAction("Index");
                 }catch (Exception ex)
                 {
@@ -55,7 +59,7 @@ namespace WebAppMonofia2025.Controllers
                 }
             }
             //refill ViewDat List
-            ViewData["DeptList"] = context.Department.ToList();
+            ViewData["DeptList"] = DepartmentRepository.GetAll();
             return View("New", empFromReq);
         }
         #endregion
@@ -79,7 +83,7 @@ namespace WebAppMonofia2025.Controllers
             ViewBag.clr = "blue";
             //new key ,override  1,throw exception 1
             //---------------------------------------------------------
-            Employee empModel= context.Employee.FirstOrDefault(e => e.Id == id);
+            Employee empModel=EmployeeRepository.GetByID(id);
             return View("DEtails", empModel);//View DEtails,Model Employee
         }
 
@@ -91,7 +95,7 @@ namespace WebAppMonofia2025.Controllers
             { "Assiut" ,"Alex","Monofia" ,"Banha" , "Cairo"};
             int temp = 20;
             string Color = "red";
-            Employee empModel = context.Employee.FirstOrDefault(e => e.Id == id);
+            Employee empModel =EmployeeRepository.GetByID(id);
 
             //declare ViewModel
             EmployeeWithBracnchListColorMsgViewModel EmpVM =new();
@@ -112,7 +116,7 @@ namespace WebAppMonofia2025.Controllers
         #region Edit
         public IActionResult Edit(int id)
         {
-            Employee empModel = context.Employee.FirstOrDefault(e=>e.Id == id);
+            Employee empModel = EmployeeRepository.GetByID(id);
             //Create ViewModel
             EmployeeWithDeptListViewModel empVM = new EmployeeWithDeptListViewModel();
             //mapping
@@ -123,7 +127,7 @@ namespace WebAppMonofia2025.Controllers
             empVM.Salary= empModel.Salary;
             empVM.DepartmentID = empModel.DepartmentID;
 
-            empVM.DeptList = context.Department.ToList();
+            empVM.DeptList = DepartmentRepository.GetAll();
             
             //send vm to view
             return View("Edit",empVM);//
@@ -137,7 +141,7 @@ namespace WebAppMonofia2025.Controllers
             {
                 //get old refernece 
                 Employee empModel = 
-                    context.Employee.FirstOrDefault(e => e.Id == empFromRequest.Id);
+                   EmployeeRepository.GetByID(empFromRequest.Id);
 
                 //mapp
                 empModel.Name=empFromRequest.Name;
@@ -146,11 +150,11 @@ namespace WebAppMonofia2025.Controllers
                 empModel.ImageUrl=empFromRequest.ImageUrl;//<--
                 empModel.DepartmentID=empFromRequest.DepartmentID;
 
-                context.SaveChanges();
+                EmployeeRepository.Save();
                 return RedirectToAction("Index");
             }
 
-            empFromRequest.DeptList=context.Department.ToList(); //refill 
+            empFromRequest.DeptList=DepartmentRepository.GetAll(); //refill 
             return View("Edit", empFromRequest);
         }
         #endregion

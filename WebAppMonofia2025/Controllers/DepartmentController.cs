@@ -1,23 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebAppMonofia2025.Models;
 
 namespace WebAppMonofia2025.Controllers
 {
     public class DepartmentController : Controller
     {
-        ITIContext context = new ITIContext();
-        public DepartmentController()
+        // ITIContext context = new ITIContext();
+        IDepartmentRepository DepartmentRepository;
+
+        public DepartmentController(IDepartmentRepository deptReop)
         {
-            
+            DepartmentRepository = deptReop;// new DepartmentRepository();
         }
         public IActionResult Index()
         {
-            List<Department> DepTList= context.Department.ToList();
-            return View("Index",DepTList); //view with name Index ,Model =List<department>
-            //1 return View("Index"); //view with name Index ,Model =null   X
-            //3 return View();//View With the same action name ,Model =null  X
-            //4 return View(DepTList); //View With the same action anme "Index" ,Model =DeptList
+            List<Department> DepTList= DepartmentRepository.GetAll();
+            return View("Index",DepTList);
         }
+
         #region New
         public IActionResult New()
         {
@@ -34,10 +33,8 @@ namespace WebAppMonofia2025.Controllers
             //{
             if (deptFromRequest.Name != null)
             {
-                //save 
-                context.Department.Add(deptFromRequest);
-                context.SaveChanges();//save in db
-                                        //DRY
+                DepartmentRepository.Add(deptFromRequest);
+                DepartmentRepository.Save();
                 return RedirectToAction("Index", "Department");
             }
             //return New View

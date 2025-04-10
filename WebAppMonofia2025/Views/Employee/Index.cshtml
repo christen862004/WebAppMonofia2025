@@ -6,7 +6,7 @@
 <h1>Index</h1>
 
 <a asp-action="New" asp-controller="Employee">New</a>
-
+<div id="div1" style="border:2px solid red"></div>
 <table class="table table-hover table-bordered">
     <tr>
         <td>Id</td>
@@ -20,7 +20,26 @@
             <td>@item.Name</td>
             <td>
                 <a href="/Employee/Edit/@item.Id">Edit</a>
+                <a href="/Employee/Details/@item.Id">DEtails</a>
+                <a href="/Employee/Delete/@item.Id">Delete</a>
+                <a href="/Employee/GetEmpCard/@item.Id" onclick="GetDetails(@item.Id)">Emp Card</a>
+
             </td>
         </tr>
     }
 </table>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function GetDetails(EmpID) {
+        event.preventDefault();
+        $.ajax({
+            url: "/Employee/GetEmpCard/"+EmpID,
+            success: function (result) {
+
+                $("#div1").html(result);
+            }
+        });
+    }
+</script>
+

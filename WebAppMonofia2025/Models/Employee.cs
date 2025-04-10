@@ -16,6 +16,7 @@ namespace WebAppMonofia2025.Models
         public string Name { get; set; }//not allow null
 
         //[Range(7000,50000)]
+      
         [Remote("CheckOdd","Employee",AdditionalFields = "Address", ErrorMessage ="Salary Must Be ODd")]
         public int Salary { get; set; }
         

@@ -4,7 +4,14 @@
 }
 
 <h1>DEtails</h1>
+<partial name="_EmpCardPartial" model="@Model"/>
 
+<a asp-action="Edit" asp-controller="Employee" asp-route-id="@Model.Id">Edit</a>
+
+
+
+
+@* 
 <h1>@ViewData["xyz"]</h1>
 <h1>@ViewBag.xyz</h1>
 <h2 style="background-color:@ViewData["clr"]">@Model.Name</h2>
@@ -33,7 +40,7 @@
 
 <hr />
 
-
+ *@
 <!--
 1) MAgic string "Dictoinary Key"
 2) Unboxing 

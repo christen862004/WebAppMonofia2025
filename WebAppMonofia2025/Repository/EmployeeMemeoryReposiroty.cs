@@ -22,6 +22,11 @@ namespace WebAppMonofia2025.Repository
             };
         }
 
+        public List<Employee> GetByDeptId(int deptID)
+        {
+            throw new NotImplementedException();
+        }
+
         public Employee GetByID(int id)
         {
             throw new NotImplementedException();

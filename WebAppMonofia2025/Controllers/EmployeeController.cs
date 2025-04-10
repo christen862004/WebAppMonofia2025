@@ -30,8 +30,33 @@ namespace WebAppMonofia2025.Controllers
             return Json(true);
         }
 
+        #region EndpointREturn Partial View
+
+        public IActionResult GetEmpCard(int id)
+        {
+            Employee emp = EmployeeRepository.GetByID(id);
+            return PartialView("_EmpCardPartial", emp);
+        }
+        #endregion
+
+        #region     Test Ajax 
+
+        public IActionResult ShowDepts()
+        {
+            List<Department> depList = DepartmentRepository.GetAll();
+            return View("ShowDepts", depList);
+        }
+        //get deptid ==>list <Employee>
+        //Employee/GetEmpsByDEptID?deptID=1
+        public IActionResult GetEmpsByDEptID(int deptID)
+        {
+            List<Employee> empList = EmployeeRepository.GetByDeptId(deptID);
+            return Json(empList);
+        }
+
+        #endregion
         #region New
-        
+
         public IActionResult New()
         {
             ViewData["DeptList"] = DepartmentRepository.GetAll();
@@ -156,6 +181,14 @@ namespace WebAppMonofia2025.Controllers
 
             empFromRequest.DeptList=DepartmentRepository.GetAll(); //refill 
             return View("Edit", empFromRequest);
+        }
+        #endregion
+
+        #region DElete
+        public IActionResult Delete(int id)
+        {
+            Employee empModel = EmployeeRepository.GetByID(id);
+            return View("Delete", empModel);
         }
         #endregion
     }

@@ -1,0 +1,33 @@
+﻿@model List<Department>
+@{
+    ViewData["Title"] = "ShowDepts";
+    SelectList deptList = new SelectList(Model, "Id", "Name");
+}
+
+<h1>ShowDepts</h1>
+<select class="form form-control" 
+asp-items="deptList" id="DepartmentID"
+onchange="GetEmps()">
+<option value="0" >--Select Dept---</option>
+</select>
+<ul id="Emps"></ul>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function GetEmps() {
+        var deptID = $("#DepartmentID").val();
+        console.log(deptID);
+        $("#Emps").html("");
+        $.ajax({
+            url: "/Employee/GetEmpsByDEptID?deptID=" + deptID,
+            success: function (result) {
+                console.log(result);
+               // $("#div1").html(result);
+                for (let item of result) {
+                    $("#Emps").append("<li>"+item.name+"</li>")
+                }
+            }
+        });
+    }
+</script>
+

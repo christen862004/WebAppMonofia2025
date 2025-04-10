@@ -39,5 +39,10 @@
         {
             return context.SaveChanges();
         }
+
+        public List<Employee> GetByDeptId(int deptID)
+        {
+            return context.Employee.Where(e=>e.DepartmentID==deptID).ToList();
+        }
     }
 }

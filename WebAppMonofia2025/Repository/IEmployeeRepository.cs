@@ -3,5 +3,6 @@
     //ISP
     public interface IEmployeeRepository:IRepository<Employee>
     {
+        List<Employee> GetByDeptId(int deptID);
     }
 }

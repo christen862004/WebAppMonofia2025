@@ -60,15 +60,30 @@ namespace WebAppMonofia2025
             }
             app.UseStaticFiles();//handel reqq extension path  ==>wwwroot
 
-            app.UseRouting();//handel mvc reeust
+            app.UseRouting();//handel mvc reeust //SEcurity (Mapp base on route define down)
 
             app.UseSession();//setting  up in service berfor v=builder build
 
             app.UseAuthorization();
+            // Custom route nameing Convention Route
+            //app.MapControllerRoute("Route1", "r1/{age:int:range(20,60)}/{name?}",
+            //    new { controller="Route",action="Method1"});
+
+
+            //app.MapControllerRoute("Route1", "r1",
+            //    new { controller = "Route", action = "Method1" });
+
+            //app.MapControllerRoute("Route2", "r2",
+            //    new { controller = "Route", action = "Method2" });
+
+            //app.MapControllerRoute("Route2", "{controller}/{action}",
+            //    new { controller = "Route", action = "Method2" });
+
+
             
-            app.MapControllerRoute(
+            app.MapControllerRoute( //define route and Execute
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Employee}/{action=Index}/{id?}");
             
             app.Run();//run web app
         }

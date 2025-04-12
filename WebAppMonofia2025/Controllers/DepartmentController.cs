@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebAppMonofia2025.Controllers
 {
+    [Authorize]
     public class DepartmentController : Controller
     {
         // ITIContext context = new ITIContext();
@@ -11,6 +13,7 @@ namespace WebAppMonofia2025.Controllers
         {
             DepartmentRepository = deptReop;// new DepartmentRepository();
         }
+
         public IActionResult Index()
         {
             List<Department> DepTList= DepartmentRepository.GetAll();
@@ -44,6 +47,7 @@ namespace WebAppMonofia2025.Controllers
 
         // Get Department/method1
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult method1()//valid
         {
             return Content("Method1");

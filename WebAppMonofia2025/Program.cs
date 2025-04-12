@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using WebAppMonofia2025.Filtters;
 
 namespace WebAppMonofia2025
 {
@@ -14,8 +16,11 @@ namespace WebAppMonofia2025
             // Built in Service 
             //    1) define and register
             //    2) define need to registre(AddSession)
-            
+
             builder.Services.AddControllersWithViews();
+            //    (option=>
+            //    option.Filters.Add(new HandelErrorAttribute())
+            //);
             builder.Services.AddSession(
                 option=>option.IdleTimeout=TimeSpan.FromMinutes(30)
                 );//set session setting
@@ -23,6 +28,20 @@ namespace WebAppMonofia2025
             {
                 optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("CS"));
             });
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
+            }).AddEntityFrameworkStores<ITIContext>();
+
+
+
+
+
+
+
+
 
 
             // Custom Service Register

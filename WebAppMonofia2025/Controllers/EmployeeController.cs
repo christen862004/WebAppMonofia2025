@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.CodeAnalysis.Operations;
 
 
 namespace WebAppMonofia2025.Controllers
 {
+   // [xyz]//apply on all action inside this controller
     public class EmployeeController : Controller
     {
         //DIP  + OCP + ISP + SRP (IOC)
@@ -13,10 +16,11 @@ namespace WebAppMonofia2025.Controllers
         public EmployeeController
             (IEmployeeRepository EmpREpo,IDepartmentRepository deptRepo)//inject
         {
+           
             EmployeeRepository = EmpREpo; //new EmployeeRepository();//dont craete
             DepartmentRepository = deptRepo;//new DepartmentRepository();
         }
-
+        [Authorize]
         public IActionResult Index()
         {
             List<Employee> EmpList = EmployeeRepository.GetAll(); 
@@ -162,6 +166,7 @@ namespace WebAppMonofia2025.Controllers
         [HttpPost]
         public IActionResult SaveEdit(EmployeeWithDeptListViewModel empFromRequest)//Employee empFromRequest,int id)
         {
+   
             if (empFromRequest.Name != null && empFromRequest.Salary>6000)
             {
                 //get old refernece 

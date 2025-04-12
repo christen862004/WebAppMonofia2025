@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebAppMonofia2025.Models
 {
-    public class ITIContext :DbContext
+    public class ITIContext :IdentityDbContext<ApplicationUser>
     {
-        //declare properties to Table
+        //declare properties Bto Table
         public DbSet<Employee> Employee { get; set; }
         public DbSet<Department> Department { get; set; }
 
